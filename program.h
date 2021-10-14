@@ -16,6 +16,9 @@ enum class Opcode : uint8_t {
   PUSH_FUNC,
   PUSH_PROTO,
 
+	// places a constant at the top of the stack
+	PUSH_INT,
+
   PEEK,
   POP,
   CALL,
