@@ -6,4 +6,4 @@ func plus100(a: int): int {
   return a + 100
 }
 
-print_int(test(read_int(), read_int()))
+print_int(plus100(read_int()))

@@ -237,7 +237,7 @@ const Token &Lexer::Next()
 				int64_t numb;
 				stream >> numb;
 
-				return tk_ = Token::Integer(loc, static_cast<uint64_t>(numb));	
+				return tk_ = Token::Integer(loc, static_cast<uint64_t>(numb));
 			}
       Error("unknown character '" + std::string(1, chr_) + "'");
     }
