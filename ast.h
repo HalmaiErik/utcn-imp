@@ -45,7 +45,7 @@ public:
     REF,
     BINARY,
     CALL,
-	INT,
+		INT,
   };
 
 public:
@@ -84,7 +84,9 @@ public:
   /// Enumeration of binary operators.
   enum class Kind {
     ADD,
-	SUB
+		SUB,
+		MUL,
+		EQUALITY
   };
 
 public:

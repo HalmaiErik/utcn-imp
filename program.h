@@ -25,6 +25,8 @@ enum class Opcode : uint8_t {
 
   ADD,
   SUB,
+	MUL,
+	EQUALITY
   RET,
 
   JUMP_FALSE,

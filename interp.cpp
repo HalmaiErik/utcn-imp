@@ -58,12 +58,30 @@ void Interp::Run()
         Push(lhs + rhs);
         continue;
       }
-	  case Opcode::SUB: {
-		auto rhs = PopInt();
-		auto lhs = PopInt();
-		Push(lhs - rhs);
-		continue;
-	  }
+	  	case Opcode::SUB: {
+				auto rhs = PopInt();
+				auto lhs = PopInt();
+				Push(lhs - rhs);
+				continue;
+	  	}
+			case Opcode::MUL: {
+				auto rhs = PopInt();
+				auto lhs = PopInt();
+				Push(lhs * rhs);
+				continue;
+			}
+			case Opcode::EQUALITY: {
+				auto rhs = PopInt();
+				auto lhs = PopInt();
+				
+				if (rhs == lhs) {
+					Push((int64_t) 1);
+				}
+				else {
+					Push((int64_t) 0);
+				}
+				continue;			
+			}
       case Opcode::RET: {
         auto depth = prog_.Read<unsigned>(pc_);
         auto nargs = prog_.Read<unsigned>(pc_);

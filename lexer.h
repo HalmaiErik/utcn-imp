@@ -37,6 +37,7 @@ public:
     FUNC,
     RETURN,
     WHILE,
+		IF,
     // Symbols.
     LPAREN,
     RPAREN,
@@ -48,6 +49,8 @@ public:
     COMMA,
     PLUS,
 		SUB,
+		MUL,
+		EQUALITY,
     // Complex tokens.
     INT,
     STRING,
@@ -109,10 +112,13 @@ public:
   static Token Equal(const Location &l) { return Token(l, Kind::EQUAL); }
   static Token Plus(const Location &l) { return Token(l, Kind::PLUS); }
   static Token Sub(const Location &l) { return Token(l, Kind::SUB); }
+	static Token Mul(const Location &l) { return Token(l, Kind::MUL); }
   static Token Comma(const Location &l) { return Token(l, Kind::COMMA); }
   static Token Func(const Location &l) { return Token(l, Kind::FUNC); }
   static Token Return(const Location &l) { return Token(l, Kind::RETURN); }
   static Token While(const Location &l) { return Token(l, Kind::WHILE); }
+	static Token If(const Location &l) { return Token(l, Kind::IF); }
+	static Token Equality(const Location &l) { return Token(l, Kind::EQUALITY); }
   static Token Ident(const Location &l, const std::string &str);
   static Token String(const Location &l, const std::string &str);
   static Token Integer(const Location &l, const uint64_t &integer);

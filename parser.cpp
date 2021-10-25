@@ -179,27 +179,55 @@ std::shared_ptr<Expr> Parser::ParseCallExpr()
 }
 
 // -----------------------------------------------------------------------------
+std::shared_ptr<Expr> Parser::ParseCompExpr()
+{
+	std::shared_ptr<Expr> = ParseAddSubExpr();
+	
+	while(Current().Is(Token::Kind::EQUALITY)) {
+		lexer_.Next();
+		auto rhs = ParseAddSubExpr();
+		term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::EQUALITY, term, rhs);
+	}
+
+	return term;
+}
+
+// -----------------------------------------------------------------------------
 std::shared_ptr<Expr> Parser::ParseAddSubExpr()
 {
-  std::shared_ptr<Expr> term = ParseCallExpr();
+  std::shared_ptr<Expr> term = ParseMulExpr();
 
-	// Addition
-  while (Current().Is(Token::Kind::PLUS)) {
+	// Addition & Subtraction
+  while (Current().Is(Token::Kind::PLUS) || Current().Is(Token::Kind::SUB)) {
+		const bool isAddition = Current().Is(Token::Kind::PLUS);
+
     lexer_.Next();
-    auto rhs = ParseCallExpr();
-    term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::ADD, term, rhs);
+    auto rhs = ParseMulExpr();
+
+		if (isAddition) {
+    	term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::ADD, term, rhs);
+		}
+		else {
+			term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::SUB, term, rhs);
+		}
   }
-  
-	// Subtraction
-	while(Current().Is(Token::Kind::SUB)) {
-		lexer_.Next();
-		auto rhs = ParseCallExpr();
-		term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::SUB, term, rhs);
-	}
 
   return term;
 }
 
+// -----------------------------------------------------------------------------
+std::shared_ptr<Expr> Parser::ParseMulExpr()
+{
+	std::shared_ptr<Expr> term = ParseCallExpr();
+
+	while (Current().Is(Token::Kind::MUL)) {
+    lexer_.Next();
+    auto rhs = ParseCallExpr();
+    term = std::make_shared<BinaryExpr>(BinaryExpr::Kind::MUL, term, rhs);
+  }
+
+	return term;
+}
 
 // -----------------------------------------------------------------------------
 const Token &Parser::Expect(Token::Kind kind)
