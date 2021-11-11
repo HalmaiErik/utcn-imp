@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstring>
 #include <vector>
+#include <iostream>
 
 
 
@@ -33,6 +34,9 @@ enum class Opcode : uint8_t {
   JUMP,
   STOP
 };
+
+/// Helper to print a token kind to a stream.
+std::ostream &operator<<(std::ostream &os, Opcode kind);
 
 
 /**

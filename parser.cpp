@@ -90,7 +90,12 @@ std::shared_ptr<Stmt> Parser::ParseStmt()
     case Token::Kind::WHILE: return ParseWhileStmt();
 		case Token::Kind::IF: return ParseIfStmt();
     case Token::Kind::LBRACE: return ParseBlockStmt();
-    default: return std::make_shared<ExprStmt>(ParseExpr());
+    default: {
+			auto expr = std::make_shared<ExprStmt>(ParseExpr());
+			Check(Token::Kind::SEMI);
+			lexer_.Next();
+			return expr;
+		}
   }
 }
 
@@ -98,13 +103,10 @@ std::shared_ptr<Stmt> Parser::ParseStmt()
 std::shared_ptr<BlockStmt> Parser::ParseBlockStmt()
 {
   Check(Token::Kind::LBRACE);
-
+	lexer_.Next();
   std::vector<std::shared_ptr<Stmt>> body;
-  while (!lexer_.Next().Is(Token::Kind::RBRACE)) {
+  while (!Current().Is(Token::Kind::RBRACE)) {
     body.push_back(ParseStmt());
-    if (!Current().Is(Token::Kind::SEMI)) {
-      break;
-    }
   }
   Check(Token::Kind::RBRACE);
   lexer_.Next();
@@ -117,6 +119,8 @@ std::shared_ptr<ReturnStmt> Parser::ParseReturnStmt()
   Check(Token::Kind::RETURN);
   lexer_.Next();
   auto expr = ParseExpr();
+	Check(Token::Kind::SEMI);
+	lexer_.Next();
   return std::make_shared<ReturnStmt>(expr);
 }
 

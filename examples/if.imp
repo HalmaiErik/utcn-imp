@@ -4,9 +4,9 @@ func read_int(): int = "read_int"
 
 func exp(a: int): int {
   if (a == 0) {
-    return 0
+    return 0;
   }
 	return 1;
 }
 
-print_int(exp(read_int()))
+print_int(exp(read_int()));

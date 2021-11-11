@@ -142,19 +142,29 @@ void Codegen::LowerBlockStmt(const Scope &scope, const BlockStmt &blockStmt)
 // -----------------------------------------------------------------------------
 void Codegen::LowerIfStmt(const Scope &scope, const IfStmt &ifStmt) 
 {
-	auto exitIf = MakeLabel();
-	auto exitElse = MakeLabel();
+	std::shared_ptr<Stmt> elseStmt = ifStmt.GetElseStmt();
 	
-	LowerExpr(scope, ifStmt.GetCond());
-	EmitJumpFalse(exitIf);
-	LowerStmt(scope, ifStmt.GetIfStmt());
-	EmitJump(exitIf);
-	
-	EmitLabel(exitIf);
-	if (ifStmt.hasElse()) {
-		LowerStmt(scope, ifStmt.GetElseStmt());
+	if (elseStmt) {
+		auto elseStart = MakeLabel();
+		auto end = MakeLabel();
+
+		LowerExpr(scope, ifStmt.GetCond());
+		EmitJumpFalse(elseStart);
+		LowerStmt(scope, ifStmt.GetIfStmt());
+		EmitJump(end);
+		
+		EmitLabel(elseStart);
+		LowerStmt(scope, *ifStmt.GetElseStmt());
+		EmitLabel(end);
 	}
-	EmitLabel(exitElse);
+	else {
+		auto end = MakeLabel();
+		
+		LowerExpr(scope, ifStmt.GetCond());
+		EmitJumpFalse(end);
+		LowerStmt(scope, ifStmt.GetIfStmt());
+		EmitLabel(end);
+	}
 }
 
 // -----------------------------------------------------------------------------
