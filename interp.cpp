@@ -78,10 +78,10 @@ void Interp::Run()
 				auto lhs = PopInt();
 				
 				if (rhs == lhs) {
-					Push(true);
+					Push((int64_t) 1);
 				}
 				else {
-					Push(false);
+					Push((int64_t) 0);
 				}
 				continue;			
 			}

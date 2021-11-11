@@ -147,7 +147,7 @@ std::shared_ptr<IfStmt> Parser::ParseIfStmt()
 	// Optional else branch
 	std::shared_ptr<Stmt> elseStmt = nullptr;
 	const auto &tk = Current();
-	if (tk.GetKind() != Token::Kind::ELSE) {
+	if (tk.GetKind() == Token::Kind::ELSE) {
 		lexer_.Next();
 		elseStmt = ParseStmt();
 	} 

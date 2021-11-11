@@ -252,11 +252,13 @@ public:
     , ifStmt_(ifStmt)
 		, elseStmt_(elseStmt)
   {
+		hasElseStmt = (elseStmt != nullptr);
   }
 
   const Expr &GetCond() const { return *cond_; }
   const Stmt &GetIfStmt() const { return *ifStmt_; }
 	const Stmt &GetElseStmt() const { return *elseStmt_; }
+	const bool &hasElse() const { return hasElseStmt; }
 
 private:
   /// Condition for the statement.
@@ -266,7 +268,7 @@ private:
   /// Expression to be executed in the else body.
   std::shared_ptr<Stmt> elseStmt_;
 	/// Check for optional alternative branch.
-  bool hasElse_;
+  bool hasElseStmt;
 };
 
 /**

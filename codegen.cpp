@@ -148,10 +148,10 @@ void Codegen::LowerIfStmt(const Scope &scope, const IfStmt &ifStmt)
 	LowerExpr(scope, ifStmt.GetCond());
 	EmitJumpFalse(exitIf);
 	LowerStmt(scope, ifStmt.GetIfStmt());
-	EmitJump(exitElse);
+	EmitJump(exitIf);
 	
 	EmitLabel(exitIf);
-	if (ifStmt.GetElseStmt() != NULL) {
+	if (ifStmt.hasElse()) {
 		LowerStmt(scope, ifStmt.GetElseStmt());
 	}
 	EmitLabel(exitElse);
