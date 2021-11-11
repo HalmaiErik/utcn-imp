@@ -49,6 +49,9 @@ void Interp::Run()
           case Value::Kind::INT: {
             throw RuntimeError("cannot call integer");
           }
+					case Value::Kind::BOOLEAN: {
+						throw RuntimeError("cannot call boolean");
+					}
         }
         continue;
       }
@@ -70,15 +73,15 @@ void Interp::Run()
 				Push(lhs * rhs);
 				continue;
 			}
-			case Opcode::EQUALITY: {
+			case Opcode::EQUALS: {
 				auto rhs = PopInt();
 				auto lhs = PopInt();
 				
 				if (rhs == lhs) {
-					Push((int64_t) 1);
+					Push(true);
 				}
 				else {
-					Push((int64_t) 0);
+					Push(false);
 				}
 				continue;			
 			}

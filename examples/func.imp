@@ -6,8 +6,10 @@ func exp(a: int, n: int): int {
   if (n == 0) {
     return 1
   } 
-	else if (x == 0) {
-		return 0
+	else {
+		if (x == 0) {
+			return 0
+		}
 	} 
 	else {
 		return a * exp(a, n - 1)

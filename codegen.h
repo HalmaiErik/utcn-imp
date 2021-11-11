@@ -112,7 +112,9 @@ private:
   void LowerStmt(const Scope &scope, const Stmt &stmt);
   /// Lowers a block statement.
   void LowerBlockStmt(const Scope &scope, const BlockStmt &blockStmt);
-  /// Lowers a while statement.
+	///Lowers an if statement
+	void LowerIfStmt(const Scope &scope, const IfStmt &ifStmt);	
+	/// Lowers a while statement.
   void LowerWhileStmt(const Scope &scope, const WhileStmt &whileStmt);
   /// Lowers a return statement.
   void LowerReturnStmt(const Scope &scope, const ReturnStmt &returnStmt);
@@ -157,8 +159,8 @@ private:
 	void EmitSub();
 	// Emit a mul opcode.
 	void EmitMul();
-	// Emit a equality opcode.
-	void EmitEquality();
+	// Emit an equals opcode.
+	void EmitEquals();
   /// Emit a label.
   void EmitLabel(Label label);
   /// Emit a conditional jump.

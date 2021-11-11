@@ -30,18 +30,21 @@ public:
       PROTO,
       ADDR,
       INT,
+			BOOLEAN,
     } Kind;
 
     union {
       RuntimeFn Proto;
       size_t Addr;
       int64_t Int;
+			bool Bool;
     } Val;
 
     Value() : Kind(Kind::INT) { Val.Int = 0; }
     Value(RuntimeFn val) : Kind(Kind::PROTO) { Val.Proto = val; }
     Value(size_t val) : Kind(Kind::ADDR) { Val.Addr = val; }
     Value(int64_t val) : Kind(Kind::INT) { Val.Int = val; }
+		Value(bool val) : Kind(Kind::BOOLEAN) { Val.Bool = val; }
 
     operator bool () const
     {
@@ -49,6 +52,7 @@ public:
         case Kind::PROTO: return true;
         case Kind::ADDR: return true;
         case Kind::INT: return Val.Int != 0;
+				case Kind::BOOLEAN: return true;
       }
       return false;
     }
@@ -86,12 +90,28 @@ public:
     return v.Val.Addr;
   }
 
+	/// Pop a bool from the stack.
+	bool PopBool()
+	{
+		auto v = Pop();
+		assert(v.Kind == Value::Kind::BOOLEAN);
+		return v.Val.Bool;
+	}
+
   /// Look at the integer on top of the stack.
   int64_t PeekInt()
   {
     auto v = *stack_.rbegin();
     assert(v.Kind == Value::Kind::INT);
     return v.Val.Int;
+  }
+
+	/// Look at the boolean on top of the stack
+	int64_t PeekBool()
+  {
+    auto v = *stack_.rbegin();
+    assert(v.Kind == Value::Kind::BOOLEAN);
+    return v.Val.Bool;
   }
 
   /// Add a value to the stack.

@@ -129,6 +129,7 @@ std::ostream &operator<<(std::ostream &os, const Token::Kind kind)
     case Token::Kind::RETURN: return os << "return";
     case Token::Kind::WHILE: return os << "while";
 		case Token::Kind::IF: return os << "if";
+		case Token::Kind::ELSE: return os << "else";
     case Token::Kind::LPAREN: return os << "(";
     case Token::Kind::RPAREN: return os << ")";
     case Token::Kind::LBRACE: return os << "{";
@@ -140,7 +141,7 @@ std::ostream &operator<<(std::ostream &os, const Token::Kind kind)
     case Token::Kind::PLUS: return os << "+";
 		case Token::Kind::SUB: return os << "-";
 		case Token::Kind::MUL: return os << "*";
-		case Token::Kind::EQUALITY: return os << "==";
+		case Token::Kind::EQUALS: return os << "==";
     case Token::Kind::END: return os << "END";
     case Token::Kind::INT: return os << "INT";
     case Token::Kind::STRING: return os << "STRING";
@@ -203,9 +204,9 @@ const Token &Lexer::Next()
     case '=': { 
 			NextChar();
 			if (chr_ == '=') {
-				return NextChar(), tk_ = Token::Equality(loc);			
+				return NextChar(), tk_ = Token::Equals(loc);			
 			}
-			return NextChar(), tk_ = Token::Equal(loc);
+			return tk_ = Token::Equal(loc);
 		}
     case '+': return NextChar(), tk_ = Token::Plus(loc);
 		case '-': return NextChar(), tk_ = Token::Sub(loc);
@@ -235,6 +236,7 @@ const Token &Lexer::Next()
         if (word == "return") return tk_ = Token::Return(loc);
         if (word == "while") return tk_ = Token::While(loc);
 				if (word == "if") return tk_ = Token::If(loc);
+				if (word == "else") return tk_ = Token::Else(loc);
         return tk_ = Token::Ident(loc, word);
       }
 			else if (isdigit(chr_)) {
