@@ -39,6 +39,7 @@ private:
       FUNC,
       PROTO,
       ARG,
+			LOCAL
     } Kind;
 
     union {
@@ -59,6 +60,8 @@ private:
 
     virtual Binding Lookup(const std::string &name) const = 0;
 
+		virtual Binding AddVariable(const std::pair<std::string, std::string> variable) const = 0;
+
   protected:
     const Scope *parent_;
   };
@@ -76,6 +79,8 @@ private:
     }
 
     Binding Lookup(const std::string &name) const override;
+	
+		void AddVariable(const std::pair<std::string, std::string> variable) const override;
 
   private:
     const std::map<std::string, Label> &funcs_;
@@ -102,9 +107,26 @@ private:
   /// Scope for a block of statements.
   class BlockScope final : public Scope {
   public:
-    BlockScope(const Scope *parent) : Scope(parent) {}
+    BlockScope(
+				const Scope *parent,
+				const std::map<std::string, uint32_t> &locals) 
+			: Scope(parent)
+			, locals_(locals)
+		{
+		}
 
     Binding Lookup(const std::string &name) const override;
+
+		void AddVariable(const std::pair<std::string, std::string> variable)
+		{
+			auto ret = locals.insert(variable);
+			if (!ret.second) {
+
+			}
+		}		
+
+	private:
+		const std::map<std::string, uint32_t> &locals_;
   };
 
 private:
@@ -120,6 +142,8 @@ private:
   void LowerReturnStmt(const Scope &scope, const ReturnStmt &returnStmt);
   /// Lowers a standalone expression statement.
   void LowerExprStmt(const Scope &scope, const ExprStmt &exprStmt);
+	/// Lowers a let statement.
+  void LowerLetStmt(const Scope &scope, const ExprStmt &letStmt);
 
   /// Lowers a single expression.
   void LowerExpr(const Scope &scope, const Expr &expr);

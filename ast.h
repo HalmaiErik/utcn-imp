@@ -23,7 +23,8 @@ public:
     WHILE,
 		IF,
     EXPR,
-    RETURN
+    RETURN,
+		LET
   };
 
 public:
@@ -268,11 +269,30 @@ private:
 };
 
 /**
+ * Let statement.
+ * 
+ * let <name>:<type> = <valExpr>
+ */
+class LetStmt final : public Stmt {
+public:
+	LetStmt(std::pair<std::string, std::string> varDec, std::shared_ptr<Expr> varVal)
+		: name_(varDec.first)
+		, type_(varDec.second)
+		, valExpr_(varVal
+	{
+	}
+
+	std::string GetName() const { return name_; }
+	std::string GetType() const { return type_; }
+	const Expr &GetValueExpr() const { return *valExpr_ }
+};
+
+/**
  * Base class for internal and external function declarations.
  */
 class FuncOrProtoDecl : public Node {
 public:
-  using ArgList = std::vector<std::pair<std::string, std::string>>;
+  using ArgList = std::vector<std::pair<std::string, std::string>f>;
 
 public:
   FuncOrProtoDecl(

@@ -53,8 +53,13 @@ Codegen::Binding Codegen::FuncScope::Lookup(const std::string &name) const
 // -----------------------------------------------------------------------------
 Codegen::Binding Codegen::BlockScope::Lookup(const std::string &name) const
 {
-  // TODO: nothing defined here yet.
-  return parent_->Lookup(name);
+  if (auto it = args_.find(name); it != args_.end()) {
+		Binding b;
+		b.Kind = Binding::Kind::LOCAL;
+		b.Index = it->second;
+		return b;
+	}
+	return parent_->Lookup(name);
 }
 
 // -----------------------------------------------------------------------------
@@ -193,6 +198,12 @@ void Codegen::LowerExprStmt(const Scope &scope, const ExprStmt &exprStmt)
 {
   LowerExpr(scope, exprStmt.GetExpr());
   EmitPop();
+}
+
+// -----------------------------------------------------------------------------
+void Codegen::LowerLetStmt(const Scope &scope, const LetStmt &letStmt)
+{
+  
 }
 
 // -----------------------------------------------------------------------------

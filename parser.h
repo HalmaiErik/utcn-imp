@@ -41,6 +41,8 @@ private:
   std::shared_ptr<WhileStmt> ParseWhileStmt();
 	/// Parse an if statement.
 	std::shared_ptr<IfStmt> ParseIfStmt();
+	/// Parse a let statement.
+	std::shared_ptr<LetStmt> ParseLetStmt();
 
   /// Parse a single expression. -- calls lowest priority
   std::shared_ptr<Expr> ParseExpr() { return ParseEqualityExpr(); }
